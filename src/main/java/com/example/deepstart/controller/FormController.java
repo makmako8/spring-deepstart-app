@@ -2,6 +2,7 @@ package com.example.deepstart.controller;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.validation.Valid;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.deepstart.model.UserEntity;
 import com.example.deepstart.model.UserForm;
 import com.example.deepstart.repository.UserRepository;
+
 
 
 @Controller
@@ -60,13 +62,25 @@ public class FormController {
     }
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
-        UserEntity user = userRepository.findById(id).orElseThrow();
-        model.addAttribute("user", user);
+        Optional<UserEntity> userOpt = userRepository.findById(id);
+        if (userOpt.isEmpty()) {
+            // IDが存在しない場合の処理（404など）
+            return "redirect:/list";
+        }
+         model.addAttribute("user",userOpt.get());
         return "edit";
     }
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute UserEntity user) {
-        userRepository.save(user); // 上書き保存
+    public String updateUser(
+    		@ModelAttribute("user") @Valid UserEntity user, 
+    		BindingResult bindingResult, 
+    		Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
+            return "edit";
+        }
+
+    	userRepository.save(user); // 上書き保存
         return "redirect:/list";
     }
     @PostMapping("/delete/{id}")
