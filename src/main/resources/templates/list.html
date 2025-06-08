@@ -6,7 +6,11 @@
 </head>
 <body>
     <h1>登録済みユーザー一覧</h1>
-
+	<form th:action="@{/list}" method="get">
+	    <input type="text" name="keyword" th:value="${keyword}" placeholder="名前で検索" />
+	    <button type="submit">検索</button>
+		<br>
+	</form>
     <table border="1">
         <tr>
             <th>ID</th>

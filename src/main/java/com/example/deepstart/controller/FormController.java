@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.deepstart.model.UserEntity;
 import com.example.deepstart.model.UserForm;
@@ -55,9 +56,16 @@ public class FormController {
         return "result";
     }
     @GetMapping("/list")
-    public String userList(Model model) {
-        List<UserEntity> userList = userRepository.findAll();
+    public String userList(@RequestParam(name = "keyword", required = false) String keyword,Model model) {
+        List<UserEntity> userList;
+        
+        if (keyword != null && !keyword.isBlank()) {
+            userList = userRepository.findByNameContainingIgnoreCase(keyword);
+        } else {
+            userList = userRepository.findAll();
+        }
         model.addAttribute("userList", userList);
+        model.addAttribute("keyword", keyword); 
         return "list";
     }
     @GetMapping("/edit/{id}")
