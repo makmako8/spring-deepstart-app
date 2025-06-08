@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.deepstart.model.UserEntity;
@@ -56,5 +57,21 @@ public class FormController {
         List<UserEntity> userList = userRepository.findAll();
         model.addAttribute("userList", userList);
         return "list";
+    }
+    @GetMapping("/edit/{id}")
+    public String editForm(@PathVariable Long id, Model model) {
+        UserEntity user = userRepository.findById(id).orElseThrow();
+        model.addAttribute("user", user);
+        return "edit";
+    }
+    @PostMapping("/update")
+    public String updateUser(@ModelAttribute UserEntity user) {
+        userRepository.save(user); // 上書き保存
+        return "redirect:/list";
+    }
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userRepository.deleteById(id);
+        return "redirect:/list";
     }
 }

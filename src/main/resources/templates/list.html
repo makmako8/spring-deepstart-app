@@ -13,11 +13,20 @@
             <th>名前</th>
             <th>メール</th>
         </tr>
-        <tr th:each="user : ${userList}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.email}"></td>
-        </tr>
+		<tr th:each="user : ${userList}">
+		    <td th:text="${user.id}"></td>
+		    <td th:text="${user.name}"></td>
+		    <td th:text="${user.email}"></td>
+		    <td>
+		        <form th:action="@{/delete/{id}(id=${user.id})}" method="post">
+		            <button type="submit">削除</button>
+		        </form>
+		    </td>
+		    <td>
+		        <a th:href="@{/edit/{id}(id=${user.id})}">編集</a>
+		    </td>
+		</tr>
+
     </table>
 </body>
 </html>
