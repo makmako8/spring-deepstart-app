@@ -6,12 +6,20 @@
     <title>ユーザー一覧</title>
 </head>
 <body>
-	<div class="container mt-3">
+	<div class="container mt-4">
 		<div style="overflow-x:auto;">
     <h1>登録済みユーザー一覧</h1>
-	<form th:action="@{/list}" method="get">
-	    <input type="text" name="keyword" th:value="${keyword}" placeholder="名前で検索" class="form-control w-50 d-inline" />
-	    <button type="submit"class="btn btn-primary btn-sm">検索</button>
+	<!-- 検索フォーム（名前＋メール） -->
+	<form th:action="@{/list}" method="get" class="mb-3 row gx-2">
+	    <div class="col-auto">
+	        <input type="text" name="nameKeyword" th:value="${nameKeyword}" placeholder="名前で検索" class="form-control" />
+	    </div>
+	    <div class="col-auto">
+	        <input type="text" name="emailKeyword" th:value="${emailKeyword}" placeholder="メールで検索" class="form-control" />
+	    </div>
+	    <div class="col-auto">
+	        <button type="submit" class="btn btn-primary">検索</button>
+	    </div>
 	</form>
 	<br>
 	

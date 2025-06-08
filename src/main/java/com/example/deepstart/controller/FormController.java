@@ -58,16 +58,24 @@ public class FormController {
         return "result";
     }
     @GetMapping("/list")
-    public String userList(@RequestParam(name = "keyword", required = false) String keyword,Model model) {
-        List<UserEntity> userList;
+    public String userList(
+    	    @RequestParam(name = "nameKeyword", required = false) String nameKeyword,
+    	    @RequestParam(name = "emailKeyword", required = false) String emailKeyword,
+    	    Model model) {
+    	
+        	List<UserEntity> userList;
         
-        if (keyword != null && !keyword.isBlank()) {
-            userList = userRepository.findByNameContainingIgnoreCase(keyword);
-        } else {
-            userList = userRepository.findAll();
-        }
+            if ((nameKeyword != null && !nameKeyword.isBlank()) || (emailKeyword != null && !emailKeyword.isBlank())) {
+                userList = userRepository.findByNameContainingIgnoreCaseAndEmailContainingIgnoreCase(
+                    nameKeyword != null ? nameKeyword : "",
+                    emailKeyword != null ? emailKeyword : ""
+                );
+            } else {
+                userList = userRepository.findAll();
+            }
         model.addAttribute("userList", userList);
-        model.addAttribute("keyword", keyword); 
+        model.addAttribute("nameKeyword", nameKeyword);
+        model.addAttribute("emailKeyword", emailKeyword);
         return "list";
     }
     @GetMapping("/edit/{id}")

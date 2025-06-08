@@ -7,4 +7,5 @@ import com.example.deepstart.model.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findByNameContainingIgnoreCase(String keyword);
+    List<UserEntity> findByNameContainingIgnoreCaseAndEmailContainingIgnoreCase(String name, String email);
 }
