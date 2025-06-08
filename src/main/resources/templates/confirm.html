@@ -1,0 +1,18 @@
+<!-- src/main/resources/templates/confirm.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>確認ページ</title>
+</head>
+<body>
+    <h1>確認画面</h1>
+    <p>名前：<span th:text="${userForm.name}"></span></p>
+    <p>メール：<span th:text="${userForm.email}"></span></p>
+	<form action="/result" th:object="${userForm}" method="post">
+	    <input type="hidden" th:field="*{name}" />
+	    <input type="hidden" th:field="*{email}" />
+	    <button type="submit">登録</button>
+	</form>
+</body>
+</html>
