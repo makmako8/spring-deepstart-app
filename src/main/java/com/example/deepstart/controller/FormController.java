@@ -1,9 +1,11 @@
 package com.example.deepstart.controller;
 
 
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -98,5 +100,29 @@ public class FormController {
     public String deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
         return "redirect:/list";
+    }
+    @GetMapping("/export")
+    public void exportCsv(HttpServletResponse response) throws Exception {
+        response.setContentType("text/csv; charset=UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename=users.csv");
+
+        List<UserEntity> users = userRepository.findAll();
+
+        PrintWriter writer = response.getWriter();
+        writer.println("ID,名前,メール,登録日時,更新日時");
+
+        for (UserEntity user : users) {
+            writer.printf(
+                "%d,%s,%s,%s,%s\n",
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt() != null ? user.getCreatedAt().toString() : "",
+                user.getUpdatedAt() != null ? user.getUpdatedAt().toString() : ""
+            );
+        }
+
+        writer.flush();
+        writer.close();
     }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
     <title>ユーザー一覧</title>
 </head>
 <body>
@@ -9,7 +9,9 @@
 	<form th:action="@{/list}" method="get">
 	    <input type="text" name="keyword" th:value="${keyword}" placeholder="名前で検索" />
 	    <button type="submit">検索</button>
-		<br>
+		<p>
+		<a href="/export">📄 CSV出力</a>
+		</p>
 	</form>
     <table border="1">
         <tr>
@@ -29,7 +31,9 @@
 			<td th:text="${user.updatedAt != null ? #temporals.format(user.updatedAt, 'yyyy-MM-dd HH:mm') : '--'}"></td>
 
 		    <td>
-				<a th:href="@{/edit/{id}(id=${user.id})}">編集</a>
+				<a th:href="@{/edit/{id}(id=${user.id})}">
+				    <button type="button">編集</button>
+				</a>
 		    </td>
 			<td>
 			    <form th:action="@{/delete/{id}(id=${user.id})}" method="post">
