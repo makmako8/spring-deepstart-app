@@ -12,19 +12,26 @@
             <th>ID</th>
             <th>名前</th>
             <th>メール</th>
+			<th>登録日時</th>
+			<th>更新日時</th>
+			<th colspan="2">操作</th>
+		
         </tr>
 		<tr th:each="user : ${userList}">
 		    <td th:text="${user.id}"></td>
 		    <td th:text="${user.name}"></td>
 		    <td th:text="${user.email}"></td>
-		    <td>
-		        <form th:action="@{/delete/{id}(id=${user.id})}" method="post">
-		            <button type="submit">削除</button>
-		        </form>
-		    </td>
+			<td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+			<td th:text="${user.updatedAt != null ? #temporals.format(user.updatedAt, 'yyyy-MM-dd HH:mm') : '--'}"></td>
+
 		    <td>
 				<a th:href="@{/edit/{id}(id=${user.id})}">編集</a>
 		    </td>
+			<td>
+			    <form th:action="@{/delete/{id}(id=${user.id})}" method="post">
+			        <button type="submit">削除</button>
+			    </form>
+			</td>
 		</tr>
 
     </table>
