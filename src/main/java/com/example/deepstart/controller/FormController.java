@@ -79,6 +79,9 @@ public class FormController {
             model.addAttribute("user", user);
             return "edit";
         }
+        // 🔽 登録済みのcreatedAtを保持してから保存
+        UserEntity original = userRepository.findById(user.getId()).orElseThrow();
+        user.setCreatedAt(original.getCreatedAt());
 
     	userRepository.save(user); // 上書き保存
         return "redirect:/list";
